@@ -34,13 +34,14 @@ class SizeEnum(str, Enum):
     small = "S"
     medium = "M"
     large = "L"
+    unknown = "?"
 
 
 class DifficultyEnum(str, Enum):
-    easy = "easy"
-    medium = "medium"
-    hard = "hard"
-    fluffy = "fluffy"
+    easy = "E"
+    medium = "M"
+    hard = "H"
+    unknown = "?"
 
 
 class Owner(BaseModel):
