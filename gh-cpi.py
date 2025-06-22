@@ -24,12 +24,6 @@ class IterationEnum(str, Enum):
     next = "@next"
 
 
-class PriorityEnum(str, Enum):
-    one = "1"
-    two = "2"
-    three = "3"
-
-
 class SizeEnum(str, Enum):
     small = "S"
     medium = "M"
@@ -77,7 +71,6 @@ class Issue(BaseModel):
     labels: list[str] = Field(default_factory=list)
     status: StatusEnum = Field(default=StatusEnum.todo)
     iteration: IterationEnum = Field(default=IterationEnum.current)
-    priority: PriorityEnum = Field(default=PriorityEnum.two)
     size: SizeEnum = Field(default=SizeEnum.medium)
     difficulty: DifficultyEnum = Field(default=DifficultyEnum.medium)
     inception: datetime.date = Field(default=datetime.date(2022, 6, 6))
@@ -162,7 +155,6 @@ class ProjectInfo(BaseModel):
     id: str
     status: "ProjectOptionsField"
     iteration: "ProjectOptionsField"
-    priority: "ProjectOptionsField"
     size: "ProjectOptionsField"
     difficulty: "ProjectOptionsField"
 
@@ -207,9 +199,6 @@ def get_project_info(token: str, owner: Owner, number: int) -> ProjectInfo:
             }
             iteration: field(name: "Iteration") {
                 ... IterationSelect
-            }
-            priority: field(name: "Priority") {
-                ... SingleSelect
             }
             size: field(name: "Size") {
                 ... SingleSelect
@@ -257,10 +246,6 @@ def get_project_info(token: str, owner: Owner, number: int) -> ProjectInfo:
                 "id": data["iteration"]["id"],
                 "options": build_options(data["iteration"]["configuration"]),
             },
-            "priority": {
-                "id": data["priority"]["id"],
-                "options": build_options(data["priority"]),
-            },
             "size": {
                 "id": data["size"]["id"],
                 "options": build_options(data["size"]),
@@ -290,7 +275,6 @@ def create_project_issue(
     labels: list[str],
     status: str,
     iteration: str,
-    priority: str,
     size: str,
     difficulty: str,
 ) -> str:
@@ -302,9 +286,6 @@ def create_project_issue(
         sys.exit(1)
     elif iteration not in project.iteration.options:
         print(f"Invalid iteration: {iteration}")
-        sys.exit(1)
-    elif priority not in project.priority.options:
-        print(f"Invalid priority: {priority}")
         sys.exit(1)
     elif size not in project.size.options:
         print(f"Invalid size: {size}")
@@ -329,13 +310,6 @@ def create_project_issue(
         item_id,
         project.iteration.id,
         project.iteration.options[iteration],
-    )
-    set_project_item_field_select(
-        token,
-        project.id,
-        item_id,
-        project.priority.id,
-        project.priority.options[priority],
     )
     set_project_item_field_select(
         token,
@@ -538,7 +512,6 @@ def main():
         labels=issue.labels,
         status=issue.status.value,
         iteration=issue.iteration_title,
-        priority=issue.priority.value,
         size=issue.size.value,
         difficulty=issue.difficulty.value,
     )

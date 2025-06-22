@@ -97,7 +97,6 @@ labels:
   - "label-b"
 status: "Next"
 iteration: "@next"
-priority: "2"
 size: "M"
 difficulty: "easy"
 inception: "2022-06-06"
@@ -138,11 +137,6 @@ Issue body text in Markdown format.
   - `iteration` refers to a `Iteration` field with name `Iteration` with
     weekly iterations starting from `inception` onwards. It can be either
     `@current` or `@next`.
-  - `priority` refers to a `SingleSelect` field with name `Priority` with
-    following options:
-    - `1`
-    - `2`
-    - `3`
   - `size` refers to a `SingleSelect` field with name `Size` with following options:
     - `S`
     - `M`
