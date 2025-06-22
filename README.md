@@ -147,7 +147,6 @@ Issue body text in Markdown format.
     - `easy`
     - `medium`
     - `hard`
-    - `fluffy`
 
 ## Development
 
