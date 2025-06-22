@@ -13,9 +13,10 @@ from pydantic import BaseModel, Field, ValidationError
 
 class StatusEnum(str, Enum):
     inbox = "Inbox"
-    todo = "Todo"
-    next = "Next"
-    current = "Current"
+    triage = "Triage"
+    backlog = "Backlog"
+    planned = "Planned"
+    active = "Active"
     done = "Done"
 
 
@@ -69,7 +70,7 @@ class Issue(BaseModel):
     body: str
     assignees: list[str] = Field(default_factory=list)
     labels: list[str] = Field(default_factory=list)
-    status: StatusEnum = Field(default=StatusEnum.todo)
+    status: StatusEnum = Field(default=StatusEnum.planned)
     iteration: IterationEnum = Field(default=IterationEnum.current)
     size: SizeEnum = Field(default=SizeEnum.medium)
     difficulty: DifficultyEnum = Field(default=DifficultyEnum.medium)

@@ -95,7 +95,7 @@ assignees:
 labels:
   - "label-a"
   - "label-b"
-status: "Next"
+status: "Planned"
 iteration: "@next"
 size: "M"
 difficulty: "easy"
@@ -130,9 +130,10 @@ Issue body text in Markdown format.
   - `status` refers to a `SingleSelect` field with name `Status` and with
     following options:
     - `Inbox`
-    - `Todo`
-    - `Next`
-    - `Current`
+    - `Triage`
+    - `Backlog`
+    - `Planned`
+    - `Active`
     - `Done`
   - `iteration` refers to a `Iteration` field with name `Iteration` with
     weekly iterations starting from `inception` onwards. It can be either
