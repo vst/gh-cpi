@@ -26,10 +26,9 @@ class IterationEnum(str, Enum):
 
 
 class SizeEnum(str, Enum):
-    small = "S"
-    medium = "M"
-    large = "L"
-    unknown = "?"
+    small = "small"
+    medium = "medium"
+    large = "large"
 
 
 class DifficultyEnum(str, Enum):

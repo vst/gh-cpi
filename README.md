@@ -97,7 +97,7 @@ labels:
   - "label-b"
 status: "Planned"
 iteration: "@next"
-size: "M"
+size: "medium"
 difficulty: "easy"
 inception: "2022-06-06"
 ---
@@ -139,9 +139,9 @@ Issue body text in Markdown format.
     weekly iterations starting from `inception` onwards. It can be either
     `@current` or `@next`.
   - `size` refers to a `SingleSelect` field with name `Size` with following options:
-    - `S`
-    - `M`
-    - `L`
+    - `small`
+    - `medium`
+    - `large`
   - `difficulty` refers to a `SingleSelect` field with name `Difficulty` with
     following options:
     - `easy`
