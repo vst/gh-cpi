@@ -147,6 +147,14 @@ Issue body text in Markdown format.
     - `easy`
     - `medium`
     - `hard`
+- You can pass `type` as the issue type as long as:
+  - The owner is an organization, and
+  - `type` is one of:
+    - `Task`
+    - `Bug`
+    - `Feature`
+    - `Epic`
+    - `Docs`
 
 ## Development
 

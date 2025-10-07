@@ -37,6 +37,14 @@ class DifficultyEnum(str, Enum):
     hard = "hard"
 
 
+class IssueTypeEnum(str, Enum):
+    task = "Task"
+    bug = "Bug"
+    feature = "Feature"
+    epic = "Epic"
+    docs = "Docs"
+
+
 class Owner(BaseModel):
     id: str
     login: str
@@ -68,6 +76,7 @@ class Issue(BaseModel):
     body: str
     assignees: list[str] = Field(default_factory=list)
     labels: list[str] = Field(default_factory=list)
+    type: IssueTypeEnum | None = Field(default=None)
     status: StatusEnum = Field(default=StatusEnum.planned)
     iteration: IterationEnum = Field(default=IterationEnum.current)
     size: SizeEnum = Field(default=SizeEnum.medium)
@@ -133,6 +142,10 @@ class Issue(BaseModel):
         if owner is None:
             sys.stderr.write("Error: owner not found\n")
             sys.exit(1)
+
+        ## Make sure that issue type is excluded if the owner is not an organization:
+        if owner.type != "Organization" and "type" in content.metadata:
+            content.metadata.pop("type")
 
         ## Build args:
         args = {
@@ -272,6 +285,7 @@ def create_project_issue(
     body: str,
     assignees: list[str],
     labels: list[str],
+    ctype: IssueTypeEnum | None,
     status: str,
     iteration: str,
     size: str,
@@ -325,6 +339,10 @@ def create_project_issue(
         project.difficulty.options[difficulty],
     )
 
+    ## Set issue type if applicable:
+    if ctype is not None:
+        set_issue_type(token, repo, issue_url.split("/")[-1], ctype)
+
     return issue_url
 
 
@@ -349,6 +367,16 @@ def create_issue(
     )
 
     return output.strip()
+
+
+def set_issue_type(
+    token: str, repo: str, issue_number: int | str, issue_type: IssueTypeEnum
+) -> None:
+    gh(
+        token,
+        ["api", f"/repos/{repo}/issues/{issue_number}"],
+        [("method", "PATCH"), ("raw-field", f"type={issue_type.value}")],
+    )
 
 
 def add_issue_to_project(
@@ -509,6 +537,7 @@ def main():
         body=issue.body,
         assignees=issue.assignees,
         labels=issue.labels,
+        ctype=issue.type,
         status=issue.status.value,
         iteration=issue.iteration_title,
         size=issue.size.value,
