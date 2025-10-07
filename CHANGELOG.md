@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4](https://github.com/vst/gh-cpi/compare/v0.0.3...v0.0.4) (2025-10-07)
+
+
+### Features
+
+* allow setting the issue type if the owner is an organization ([e99080f](https://github.com/vst/gh-cpi/commit/e99080f66b9748d7cac5d8541ee6b32c83753f8e))
+
 ## [0.0.3](https://github.com/vst/gh-cpi/compare/v0.0.2...v0.0.3) (2025-06-22)
 
 
