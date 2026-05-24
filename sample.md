@@ -11,8 +11,8 @@ labels:
 type: "Bug" ## Only applicable if owner is an organization.
 status: "Backlog"
 iteration: "@next"
-size: "small"
-difficulty: "easy"
+footprint: "small"
+complexity: "low"
 inception: "2022-06-06"
 ---
 

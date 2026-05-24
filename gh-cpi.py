@@ -25,16 +25,16 @@ class IterationEnum(str, Enum):
     next = "@next"
 
 
-class SizeEnum(str, Enum):
+class FootprintEnum(str, Enum):
     small = "small"
     medium = "medium"
     large = "large"
 
 
-class DifficultyEnum(str, Enum):
-    easy = "easy"
+class ComplexityEnum(str, Enum):
+    low = "low"
     medium = "medium"
-    hard = "hard"
+    high = "high"
 
 
 class IssueTypeEnum(str, Enum):
@@ -79,8 +79,8 @@ class Issue(BaseModel):
     type: IssueTypeEnum | None = Field(default=None)
     status: StatusEnum = Field(default=StatusEnum.planned)
     iteration: IterationEnum = Field(default=IterationEnum.current)
-    size: SizeEnum = Field(default=SizeEnum.medium)
-    difficulty: DifficultyEnum = Field(default=DifficultyEnum.medium)
+    footprint: FootprintEnum = Field(default=FootprintEnum.medium)
+    complexity: ComplexityEnum = Field(default=ComplexityEnum.medium)
     inception: datetime.date = Field(default=datetime.date(2022, 6, 6))
 
     @property
@@ -148,6 +148,11 @@ class Issue(BaseModel):
             content.metadata.pop("type")
 
         ## Build args:
+        if "size" in content.metadata and "footprint" not in content.metadata:
+            content.metadata["footprint"] = content.metadata.pop("size")
+        if "difficulty" in content.metadata and "complexity" not in content.metadata:
+            content.metadata["complexity"] = content.metadata.pop("difficulty")
+
         args = {
             **content.metadata,
             "owner": owner,
@@ -167,8 +172,8 @@ class ProjectInfo(BaseModel):
     id: str
     status: "ProjectOptionsField"
     iteration: "ProjectOptionsField"
-    size: "ProjectOptionsField"
-    difficulty: "ProjectOptionsField"
+    footprint: "ProjectOptionsField"
+    complexity: "ProjectOptionsField"
 
 
 class ProjectOptionsField(BaseModel):
@@ -212,10 +217,10 @@ def get_project_info(token: str, owner: Owner, number: int) -> ProjectInfo:
             iteration: field(name: "Iteration") {
                 ... IterationSelect
             }
-            size: field(name: "Size") {
+            footprint: field(name: "Footprint") {
                 ... SingleSelect
             }
-            difficulty: field(name: "Difficulty") {
+            complexity: field(name: "Complexity") {
                 ... SingleSelect
             }
         }
@@ -258,13 +263,13 @@ def get_project_info(token: str, owner: Owner, number: int) -> ProjectInfo:
                 "id": data["iteration"]["id"],
                 "options": build_options(data["iteration"]["configuration"]),
             },
-            "size": {
-                "id": data["size"]["id"],
-                "options": build_options(data["size"]),
+            "footprint": {
+                "id": data["footprint"]["id"],
+                "options": build_options(data["footprint"]),
             },
-            "difficulty": {
-                "id": data["difficulty"]["id"],
-                "options": build_options(data["difficulty"]),
+            "complexity": {
+                "id": data["complexity"]["id"],
+                "options": build_options(data["complexity"]),
             },
         }
     )
@@ -288,8 +293,8 @@ def create_project_issue(
     ctype: IssueTypeEnum | None,
     status: str,
     iteration: str,
-    size: str,
-    difficulty: str,
+    footprint: str,
+    complexity: str,
 ) -> str:
     project = get_project_info(token, project_owner, project_number)
 
@@ -300,11 +305,11 @@ def create_project_issue(
     elif iteration not in project.iteration.options:
         print(f"Invalid iteration: {iteration}")
         sys.exit(1)
-    elif size not in project.size.options:
-        print(f"Invalid size: {size}")
+    elif footprint not in project.footprint.options:
+        print(f"Invalid footprint: {footprint}")
         sys.exit(1)
-    elif difficulty not in project.difficulty.options:
-        print(f"Invalid difficulty: {difficulty}")
+    elif complexity not in project.complexity.options:
+        print(f"Invalid complexity: {complexity}")
         sys.exit(1)
 
     issue_url = create_issue(token, repo, title, body, assignees, labels)
@@ -328,15 +333,15 @@ def create_project_issue(
         token,
         project.id,
         item_id,
-        project.size.id,
-        project.size.options[size],
+        project.footprint.id,
+        project.footprint.options[footprint],
     )
     set_project_item_field_select(
         token,
         project.id,
         item_id,
-        project.difficulty.id,
-        project.difficulty.options[difficulty],
+        project.complexity.id,
+        project.complexity.options[complexity],
     )
 
     ## Set issue type if applicable:
@@ -540,8 +545,8 @@ def main():
         ctype=issue.type,
         status=issue.status.value,
         iteration=issue.iteration_title,
-        size=issue.size.value,
-        difficulty=issue.difficulty.value,
+        footprint=issue.footprint.value,
+        complexity=issue.complexity.value,
     )
 
     ## Print the issue URL:

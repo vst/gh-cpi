@@ -97,8 +97,8 @@ labels:
   - "label-b"
 status: "Planned"
 iteration: "@next"
-size: "medium"
-difficulty: "easy"
+footprint: "medium"
+complexity: "low"
 inception: "2022-06-06"
 ---
 
@@ -138,15 +138,15 @@ Issue body text in Markdown format.
   - `iteration` refers to a `Iteration` field with name `Iteration` with
     weekly iterations starting from `inception` onwards. It can be either
     `@current` or `@next`.
-  - `size` refers to a `SingleSelect` field with name `Size` with following options:
+  - `footprint` refers to a `SingleSelect` field with name `Footprint` with following options:
     - `small`
     - `medium`
     - `large`
-  - `difficulty` refers to a `SingleSelect` field with name `Difficulty` with
+  - `complexity` refers to a `SingleSelect` field with name `Complexity` with
     following options:
-    - `easy`
+    - `low`
     - `medium`
-    - `hard`
+    - `high`
 - You can pass `type` as the issue type as long as:
   - The owner is an organization, and
   - `type` is one of:
