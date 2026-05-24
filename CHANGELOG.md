@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.0](https://github.com/vst/gh-cpi/compare/v0.0.4...v0.1.0) (2026-05-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* adopt new prix GitHub Project field setup
+
+### Bug Fixes
+
+* adopt new prix GitHub Project field setup ([36fc292](https://github.com/vst/gh-cpi/commit/36fc29296ea9777243458fb284b864a8cbdfb09a))
+* **deps:** upgrade nixpkgs to v25.11 ([9c9324d](https://github.com/vst/gh-cpi/commit/9c9324d6e9fb4f1d1b32c36161b4f620812a3bbb))
+
 ## [0.0.4](https://github.com/vst/gh-cpi/compare/v0.0.3...v0.0.4) (2025-10-07)
 
 
