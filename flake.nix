@@ -2,7 +2,7 @@
   description = "Create GitHub Project Issues";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     flake-parts.url = "github:hercules-ci/flake-parts";
   };
 
@@ -13,8 +13,8 @@
         let
           pythonDev = pkgs.python3.withPackages (ps: [
             ## Production Dependencies:
-            ps.dateutil
             ps.pydantic
+            ps.python-dateutil
             ps.python-frontmatter
 
             ## Testing tools:
@@ -37,8 +37,8 @@
             {
               doCheck = false;
               libraries = [
-                pkgs.python3Packages.dateutil
                 pkgs.python3Packages.pydantic
+                pkgs.python3Packages.python-dateutil
                 pkgs.python3Packages.python-frontmatter
               ];
             }
